@@ -24,6 +24,7 @@ bScattered = 0
 absorbed = 0
 transmitted = 0
 
+# Create slab objects
 slab = cylinder(pos = vector(-0.5,0, 0), axis = vec(2,0,0), radius = 0.01, color = color.red)
 slab2 = cylinder(pos = vector(-0.5,-D, 0), axis = vec(2,0,0), radius = 0.01, color = color.red)
 
