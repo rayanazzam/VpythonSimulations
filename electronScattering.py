@@ -78,26 +78,3 @@ while True:
     move(thetaN, phiN, T)
     rate(10)
       
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
