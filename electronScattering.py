@@ -3,28 +3,30 @@ GlowScript 2.7 VPython
 monteCarloElectronScattering in 3D
 '''
 
+
 # initial conditons for gold
+
 mass = 9.11e-31 # in kg
 massG = 196 # gram/mole
-#massG = 3.2e-22
 density = 19.3 #in g/cm3
-D = 0.5 # slab thickness in micrometers
 Z = 79
+
+D = 0.2 # slab thickness in micrometers
 eradius = 1e-9 # in micro meter
 Vx = 40000000
 Vy = 40000000
 Vz = 40000000
 num_electrons = 1000
 V= sqrt(Vx**2 + Vy**2 + Vz**2)
+
 T = 0.5 * mass * V**2 * 6.42e18 * 0.001# initial energy in Kilo electron volts
+
+
 B = V/2.8e8
 
 electron_list = []
-bScattered = 0
-absorbed = 0
-transmitted = 0
 
-# Create slab objects
+#print(T, V)
 slab = cylinder(pos = vector(-0.5,0, 0), axis = vec(2,0,0), radius = 0.01, color = color.red)
 slab2 = cylinder(pos = vector(-0.5,-D, 0), axis = vec(2,0,0), radius = 0.01, color = color.red)
 
@@ -35,10 +37,7 @@ for i in arange(num_electrons):
     electron_list.append(part)
     
  
-def move(thetaN, phiN, T):
-    global bScattered
-    global absorbed
-    global transmitted
+def scatter(thetaN, phiN, T):
     for i in arange (num_electrons):
         rand1 = random() 
         rand2 = random()
@@ -65,17 +64,34 @@ def move(thetaN, phiN, T):
         phiN = phiN1
     
         electron_list[i].pos.x = electron_list[i].pos.x + Rx
-        electron_list[i].pos.y = electron_list[i].pos.y - Ry
-        electron_list[i].pos.z = electron_list[i].pos.z - Rz
+        electron_list[i].pos.y = electron_list[i].pos.y + Ry
+        electron_list[i].pos.z = electron_list[i].pos.z + Rz
         electron_list[i].trail.append(pos = electron_list[i].pos)
+
+  
         
        
 scene = display(title='Random Walk 2D', x=300, y=0, width = 800, height = 800)
 
+
+
 thetaN = acos(Vz/V) # initial theta
 phiN = acos(Vx/sqrt(Vx**2 + Vy**2))   # initial pheta
-
+counter = 0
 while True:
-    move(thetaN, phiN, T)
+    scatter(thetaN, phiN, T)
+    counter += 1
+    if counter  > 50:
+        break
     rate(10)
-      
+transmitted = 0
+scattered = 0
+absorbed = 0
+for electron in electron_list:
+    if electron.pos.y < -D :
+        transmitted +=1
+    elif electron.pos.y > 0:
+        scattered +=1
+    elif electron.pos.y > -D and electron.pos.y < 0:
+        absorbed +=1
+print(transmitted, scattered, absorbed)
