@@ -1,8 +1,10 @@
 GlowScript 2.7 VPython
 '''
 monteCarloElectronScattering in 3D
-'''
 
+This vpython simulation shows how electrons scatter when 
+incident upon a gold slab with a given thickness
+'''
 
 # initial conditons for gold
 
@@ -21,12 +23,10 @@ V= sqrt(Vx**2 + Vy**2 + Vz**2)
 
 T = 0.5 * mass * V**2 * 6.42e18 * 0.001# initial energy in Kilo electron volts
 
-
 B = V/2.8e8
 
 electron_list = []
 
-#print(T, V)
 slab = cylinder(pos = vector(-0.5,0, 0), axis = vec(2,0,0), radius = 0.01, color = color.red)
 slab2 = cylinder(pos = vector(-0.5,-D, 0), axis = vec(2,0,0), radius = 0.01, color = color.red)
 
@@ -51,7 +51,6 @@ def scatter(thetaN, phiN, T):
     
         Sn = -1.02 * B * (B+1) * massG * T**2 * log(rand3) / ( Z * (Z+1) * density)
       
-
         Rx = Sn * (sin(thetaN1) * cos(phiN1))
         Ry = Sn * (sin(thetaN1) * sin(phiN1))
         Rz = Sn * (cos(thetaN1))
@@ -66,14 +65,9 @@ def scatter(thetaN, phiN, T):
         electron_list[i].pos.x = electron_list[i].pos.x + Rx
         electron_list[i].pos.y = electron_list[i].pos.y + Ry
         electron_list[i].pos.z = electron_list[i].pos.z + Rz
-        electron_list[i].trail.append(pos = electron_list[i].pos)
-
-  
-        
+        electron_list[i].trail.append(pos = electron_list[i].pos) 
        
 scene = display(title='Random Walk 2D', x=300, y=0, width = 800, height = 800)
-
-
 
 thetaN = acos(Vz/V) # initial theta
 phiN = acos(Vx/sqrt(Vx**2 + Vy**2))   # initial pheta
